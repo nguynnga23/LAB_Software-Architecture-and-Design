@@ -2,6 +2,18 @@
 
 Hệ thống quản lý thư viện được thiết kế để hỗ trợ các chức năng cơ bản như mượn sách, trả sách, thêm sách mới, xem danh sách sách, và tìm kiếm sách. Để đảm bảo tính mở rộng và dễ bảo trì, hệ thống sử dụng các Design Pattern phù hợp. Dưới đây là giải thích chi tiết cho từng yêu cầu.
 
+## Content
+[1. Singleton Pattern - Quản lý thư viện duy nhất](#1-singleton-pattern---quản-lý-thư-viện-duy-nhất)
+
+[2. Factory Method Pattern - Tạo các loại sách khác nhau](#2-factory-method-pattern---tạo-các-loại-sách-khác-nhau)
+
+[3. Strategy Pattern - Tìm kiếm sách linh hoạt](#3-strategy-pattern---tìm-kiếm-sách-linh-hoạt)
+
+[4. Observer Pattern - Thông báo sự kiện](#4-observer-pattern---thông-báo-sự-kiện)
+
+[5. Decorator Pattern - Mở rộng tính năng mượn sách](#5-decorator-pattern---mở-rộng-tính-năng-mượn-sách)
+
+
 ## 1. Singleton Pattern - Quản lý thư viện duy nhất
 
 ### Bước 1: Bắt đầu đơn giản - Học Singleton Pattern
@@ -828,8 +840,8 @@ Mượn sách: C++ Advanced (thời gian mượn: 7 ngày) (Phiên bản đặc 
 - Việc gỡ lỗi có thể phức tạp hơn do cấu trúc bọc lồng nhau.
 
 # Kết luận
-- **Singleton** để quản lý một thư viện duy nhất.
-- **Factory Method** để tạo các loại sách khác nhau.
-- **Strategy** để linh hoạt trong tìm kiếm.
-- **Observer** để thông báo sự kiện.
-- **Decorator** để mở rộng tính năng mượn sách.
+- **Singleton Pattern**: Đảm bảo chỉ có một thể hiện duy nhất của thư viện trong toàn bộ hệ thống, giúp quản lý tập trung và tránh xung đột dữ liệu. Điều này rất hữu ích khi cần một điểm truy cập toàn cục cho các tài nguyên chung.
+- **Factory Method Pattern**: Cung cấp cơ chế tạo các loại sách khác nhau (sách giấy, sách điện tử, sách audio) mà không cần thay đổi mã nguồn chính. Nó cho phép mở rộng dễ dàng khi thêm loại sách mới, tuân thủ nguyên tắc Open/Closed.
+- **Strategy Pattern**: Mang lại sự linh hoạt trong việc tìm kiếm sách theo nhiều tiêu chí (tên, tác giả, thể loại) tại thời điểm chạy, mà không cần sửa đổi lớp chính. Điều này giúp hệ thống dễ thích nghi với các yêu cầu tìm kiếm mới.
+- **Observer Pattern**: Tự động thông báo cho các đối tượng quan tâm (nhân viên, người dùng) khi có sự kiện xảy ra, như sách mới được thêm hoặc sách quá hạn. Nó tạo ra một cơ chế thông báo hiệu quả và giảm sự phụ thuộc thủ công.
+- **Decorator Pattern**: Cho phép mở rộng tính năng mượn sách (gia hạn, phiên bản đặc biệt) mà không làm thay đổi lớp gốc, mang lại sự linh hoạt trong việc tùy chỉnh trải nghiệm mượn sách cho người dùng.
