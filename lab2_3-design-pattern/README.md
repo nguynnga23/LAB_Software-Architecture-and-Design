@@ -1,0 +1,17 @@
+# Design Pattern Demo
+
+## 1. Singleton Pattern
+![UML Diagram](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhEIImkLWZEp4lFIIt9prEevb9GqCtC0yhd9QTQ8Ki0XKeoask1yjfbYJcb8CcI8g0qI0DScGQAb2P8SNfgYIVKF3HPhCRNSZcavgK0dGO0)
+
+## 2. Factory Method Pattern
+![Factory Method UML](http://www.plantuml.com/plantuml/png/fP512i9034NtEKMMBT92PoaY1TU2LnYc4GiraJH5HBsx1JiY5aR1zVzvF7xgthpQSEoWPIFT-q2uKsc6O7W5n0NAYTHRAvpbS0S8dUzxt2Xv4vqguvM9NhPa1scoV1a9RttXe6Gq1LM2_TbrltGdd-gR4AAI3Sh8T9v99S3k7x1xWkDcvVfr5PTUtSfoffDCNSIDQL7CTaYc3chYPlpv0m00)
+
+---
+
+![UML Diagram](http://www.plantuml.com/plantuml/png/lL6nJWCn3Dtp5HvReVO3JWXL1I64Eh2niAHtlXAHiwl4KGVWtqbpHb4GIB0mMNw9dzzxtaInGTBaZIF1CDeUOPj4cE3L05n0G1emB9QbORhshd_9tRinlRSnmespdW_VVUu3Mi6PRB7ibBPEFZeQ-1JhDbZ1qHBw3kuVphKWOx0JPkJsN0koBmCPKiBVgBoJoV_B8ZLLK_av2820aW81uQaDuwloFxDLkysfS6ArFnJ6JgzN84voJBAp-v9BgVC-fj4TKa0r7H9jKtI4CUxuuFfvWqfSNttgcGjSlgtNZRdsfGfLXWolLcsApKkDmnXYGH0-0e_5MmVv74W2irrvjW8fObINJoIiwO6bGK-fUgFPv3PD_WC0)
+
+## 3. Abstract Factory Pattern
+## 4. Adapter Pattern
+![UML Diagram](http://www.plantuml.com/plantuml/png/bP2n2i8m54NtV4N6YgGVKAJKpL7gu9pwdhKGcvgyuA3-kx61Px5GSBsNSxZSofDs5Av6d8psNjOszB2p1kL3IAcSXYxuGe8DZS6Oh5kaUWoprJG-T-Ip0TiY6VROnhgnKQHxyHB9pjq_SeOFjw0TCdtlW2u_yF6JBR9Rq0EXIufnBrSB0tZtvgdKJ2PcTgjKEH5_JytpaayG5VOGdty3)
+
+
