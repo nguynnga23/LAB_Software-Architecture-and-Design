@@ -13,13 +13,13 @@ Hệ thống quản lý thư viện được thiết kế để hỗ trợ các 
 
 [5. Decorator Pattern - Mở rộng tính năng mượn sách](#5-decorator-pattern---mở-rộng-tính-năng-mượn-sách)
 
-[6. State Pattern - Mở rộng tính năng mượn sách](#6-state-pattern)
+[6. State Pattern](#6-state-pattern)
 
-[7. Adapter Pattern - Mở rộng tính năng mượn sách](#7-adapter-pattern)
+[7. Adapter Pattern](#7-adapter-pattern)
 
-[8. Composite Pattern - Mở rộng tính năng mượn sách](#8-composite-pattern)
+[8. Composite Pattern](#8-composite-pattern)
 
-[9. Chain of Responsibility Pattern - Mở rộng tính năng mượn sách](#9-chain-of-responsibility-pattern)
+[9. Chain of Responsibility Pattern](#9-chain-of-responsibility-pattern)
 
 
 ## 1. Singleton Pattern - Quản lý thư viện duy nhất
