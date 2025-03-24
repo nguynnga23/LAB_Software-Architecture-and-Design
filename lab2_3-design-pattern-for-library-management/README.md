@@ -933,125 +933,132 @@ Received JSON: {"converted": "<data><name>John</name><age>30</age></data>"}
 
 ## 8. Composite Pattern
 ### Bước 1: Bắt đầu đơn giản
-- Tạo một giao diện chung cho cả thư mục và tập tin (hiển thị thông tin).
-- Thư mục có thể thêm/xóa thành phần con, còn tập tin thì không.
+**Yêu cầu: Quản lý danh sách sản phẩm trên từng bàn và tính tổng doanh thu của quán cà phê.**
+Áp dụng Composite Pattern:
+- Component (interface): Định nghĩa phương thức getPrice() để tính giá, áp dụng chung cho cả đối tượng đơn lẻ (Leaf) và nhóm đối tượng (Composite).
+- Product (Leaf): Đại diện cho từng sản phẩm (ví dụ: cà phê, trà) với giá cố định.
+- Table (Composite): Đại diện cho một bàn, chứa danh sách các Product và tính tổng giá của các sản phẩm trên bàn.
+- Cafe (Composite cấp cao hơn): Đại diện cho toàn bộ quán cà phê, chứa danh sách các Table và tính tổng doanh thu.
 ### Bước 2: Đọc lý thuyết
 - Composite Pattern: Tổ chức các đối tượng thành cấu trúc cây để biểu diễn mối quan hệ phần-toàn (part-whole). Bao gồm:
-- Component: Giao diện hoặc lớp trừu tượng định nghĩa hành vi chung (ở đây là FileSystemComponent).
-- Leaf: Đối tượng đơn giản không chứa con (ở đây là File).
-- Composite: Đối tượng phức tạp chứa các thành phần con (ở đây là Directory).
+- Component: Giao diện hoặc lớp trừu tượng định nghĩa hành vi chung.
+- Leaf: Đối tượng đơn giản không chứa con.
+- Composite: Đối tượng phức tạp chứa các thành phần con.
 ### Bước 3: Vẽ sơ đồ UML
 ![Library UML Diagram](./uml/composite_uml.png)
-- FileSystemComponent: Giao diện chung với các phương thức displayInfo(), addComponent(), removeComponent(). Các phương thức thêm/xóa mặc định ném ngoại lệ (không áp dụng cho Leaf).
-- File: Leaf, chỉ chứa thông tin cơ bản (tên, kích thước) và triển khai displayInfo().
-- Directory: Composite, chứa danh sách các thành phần con (children) và triển khai tất cả phương thức, bao gồm quản lý con.
-
 ### Bước 4: Viết code
 ```java
 import java.util.ArrayList;
 import java.util.List;
 
 // Component
-interface FileSystemComponent {
-    void displayInfo();
-    default void addComponent(FileSystemComponent component) {
-        throw new UnsupportedOperationException("Cannot add component.");
+import java.util.ArrayList;
+import java.util.List;
+
+// Interface Component
+interface Component {
+    double getPrice();
+}
+
+// Leaf: Product
+class Product implements Component {
+    private String name;
+    private double price;
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
     }
-    default void removeComponent(FileSystemComponent component) {
-        throw new UnsupportedOperationException("Cannot remove component.");
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
+
+    public String getName() {
+        return name;
     }
 }
 
-// Leaf
-class File implements FileSystemComponent {
-    private String name;
-    private long size;
+// Composite: Table
+class Table implements Component {
+    private List<Component> products = new ArrayList<>();
 
-    public File(String name, long size) {
-        this.name = name;
-        this.size = size;
+    public void addComponent(Component component) {
+        products.add(component);
+    }
+
+    public void removeComponent(Component component) {
+        products.remove(component);
     }
 
     @Override
-    public void displayInfo() {
-        System.out.println("File: " + name + ", Size: " + size + " bytes");
-    }
-}
-
-// Composite
-class Directory implements FileSystemComponent {
-    private String name;
-    private List<FileSystemComponent> children;
-
-    public Directory(String name) {
-        this.name = name;
-        this.children = new ArrayList<>();
-    }
-
-    @Override
-    public void addComponent(FileSystemComponent component) {
-        children.add(component);
-    }
-
-    @Override
-    public void removeComponent(FileSystemComponent component) {
-        children.remove(component);
-    }
-
-    @Override
-    public void displayInfo() {
-        System.out.println("Directory: " + name);
-        for (FileSystemComponent child : children) {
-            child.displayInfo();
+    public double getPrice() {
+        double total = 0;
+        for (Component product : products) {
+            total += product.getPrice();
         }
+        return total;
     }
 }
 
-// Main
-public class FileSystemDemo {
+// Composite: Cafe
+class Cafe implements Component {
+    private List<Component> tables = new ArrayList<>();
+
+    public void addComponent(Component component) {
+        tables.add(component);
+    }
+
+    public void removeComponent(Component component) {
+        tables.remove(component);
+    }
+
+    @Override
+    public double getPrice() {
+        double total = 0;
+        for (Component table : tables) {
+            total += table.getPrice();
+        }
+        return total;
+    }
+}
+
+// Main class để kiểm tra
+public class CafeRevenue {
     public static void main(String[] args) {
-        // Tạo các file
-        FileSystemComponent file1 = new File("document.txt", 1200);
-        FileSystemComponent file2 = new File("image.jpg", 5400);
+        // Tạo các sản phẩm
+        Product coffee = new Product("Coffee", 2.5);
+        Product tea = new Product("Tea", 2.0);
+        Product juice = new Product("Juice", 3.0);
 
-        // Tạo thư mục con
-        Directory subDir = new Directory("SubFolder");
-        subDir.addComponent(new File("note.txt", 300));
+        // Tạo bàn 1
+        Table table1 = new Table();
+        table1.addComponent(coffee);
+        table1.addComponent(tea);
 
-        // Tạo thư mục gốc
-        Directory rootDir = new Directory("Root");
-        rootDir.addComponent(file1);
-        rootDir.addComponent(file2);
-        rootDir.addComponent(subDir);
+        // Tạo bàn 2
+        Table table2 = new Table();
+        table2.addComponent(juice);
 
-        // Hiển thị thông tin
-        rootDir.displayInfo();
+        // Tạo quán cà phê
+        Cafe cafe = new Cafe();
+        cafe.addComponent(table1);
+        cafe.addComponent(table2);
 
-        // Thử xóa một file
-        rootDir.removeComponent(file1);
-        System.out.println("\nAfter removing document.txt:");
-        rootDir.displayInfo();
+        // Tính và in doanh thu
+        System.out.println("Table 1 revenue: $" + table1.getPrice());
+        System.out.println("Table 2 revenue: $" + table2.getPrice());
+        System.out.println("Total cafe revenue: $" + cafe.getPrice());
     }
 }
-```
-```
-Directory: Root
-File: document.txt, Size: 1200 bytes
-File: image.jpg, Size: 5400 bytes
-Directory: SubFolder
-File: note.txt, Size: 300 bytes
 
-After removing document.txt:
-Directory: Root
-File: image.jpg, Size: 5400 bytes
-Directory: SubFolder
-File: note.txt, Size: 300 bytes
 ```
-- Composite Pattern cho phép xử lý thư mục và tập tin theo cách thống nhất thông qua giao diện chung FileSystemComponent.
-- Thư mục (Directory) quản lý các thành phần con đệ quy, trong khi tập tin (File) chỉ cung cấp thông tin cơ bản.
-- Code dễ mở rộng (ví dụ: thêm loại tập tin mới hoặc thư mục đặc biệt) và tuân theo nguyên tắc Open/Closed.
-- Ứng dụng này cũng phù hợp cho giao diện người dùng (UI), nơi các thành phần như nút, hộp thoại có thể được nhóm lại thành các thành phần phức tạp hơn.
-
+```
+Table 1 revenue: $4.5
+Table 2 revenue: $3.0
+Total cafe revenue: $7.5
+```
 ## 9. Chain of Responsibility Pattern
 ### Phân tích và lựa chọn Pattern
 - Chain of Responsibility Pattern: Phù hợp vì:
