@@ -37,19 +37,8 @@ Hệ thống quản lý thư viện được thiết kế để hỗ trợ các 
     - Cung cấp một phương thức tĩnh `getInstance()` để truy cập hoặc tạo đối tượng `Library` duy nhất nếu chưa tồn tại.
     - Lớp `Library` sẽ chứa danh sách sách và các phương thức như thêm sách, mượn sách, trả sách.
 ### Bước 3: Vẽ sơ đồ - Dùng UML để hình dung
-```
-+------------------------------+
-|     Library                  |
-+------------------------------+
-| - instance: Library (static) |
-| - books: List<Book>          |
-+------------------------------+
-| - Library()                  | (private constructor)
-| + getInstance(): Library     | (static method)
-| + addBook(book: Book)        |
-| + getBooks(): List<Book>     |
-+------------------------------+
-```
+![Library UML Diagram](./uml/singleton_uml.png)
+
 #### Giải thích sơ đồ:
 - `instance`: Biến tĩnh lưu thể hiện duy nhất.
 - `- Library()`: Hàm tạo private, không cho phép tạo mới bên ngoài.
@@ -178,32 +167,7 @@ Books in lib2: 2
     - Tạo các lớp con như PaperBookFactory, EBookFactory, AudioBookFactory để triển khai phương thức createBook().
 
 ### Bước 3: Vẽ sơ đồ - Dùng UML để hình dung
-```
-+----------------+                                                                  +----------------+
-|    Book        |<---------------------------------------------------------------->|   BookFactory  |
-| (Interface)    |                                                                  | (Abstract)     |     
-+----------------+                                                                  +----------------+
-| + getTitle()   |                                                                  | + createBook() |
-| + getType()    |                                                                  +----------------+
-+----------------+                                                                           ^
-    ^                                                                                        |
-    |                                                                 +----------------------+---------------------+
-    |                                                                 |                      |                     |
-    |                                                         +-----------------+    +----------------+    +-----------------+
-    |                                                         | PaperBookFactory|    | EBookFactory   |    | AudioBookFactory|
-    |                                                         +-----------------+    +----------------+    +-----------------+
-    |                                                         | + createBook()  |    | + createBook() |    | + createBook()  |
-    |                                                         +-----------------+    +----------------+    +-----------------+
-+-----------------------------+--------------------+
-|                             |                    |
-+----------------+    +----------------+    +----------------+
-| PaperBook      |    | EBook          |    | AudioBook      |
-+----------------+    +----------------+    +----------------+
-| + getTitle()   |    | + getTitle()   |    | + getTitle()   |
-| + getType()    |    | + getType()    |    | + getType()    |
-+----------------+    +----------------+    +----------------+
-        
-```
+![Library UML Diagram](./uml/factorymethod_uml.png)
 
 ### Bước 4: Viết code - Áp dụng vào ví dụ nhỏ
 #### Code không dùng Factory Method (ban đầu):
@@ -376,25 +340,7 @@ Hãy tưởng tượng bạn có một thư viện sách và muốn tìm kiếm 
 3. Concrete Strategies: Các lớp cụ thể triển khai từng chiến lược (tìm theo tên, tác giả, thể loại)
 
 ### Bước 3: Vẽ sơ đồ UML
-```
-+----------------+        +-----------------+
-|   BookSearcher |<>----->| SearchStrategy  |
-|  (Context)     |        |  (Interface)    |
-|                |        +-----------------+
-| - strategy     |        | + search()      |
-| + setStrategy()|        +-----------------+
-| + searchBooks()|               /|\
-+----------------+                |
-                                  |
-        +-------------------------+--------------+
-        |                         |              |
-+----------------+  +----------------+  +----------------+
-| SearchByTitle  |  | SearchByAuthor |  | SearchByGenre  |
-| (Concrete)     |  | (Concrete)     |  | (Concrete)     |
-+----------------+  +----------------+  +----------------+
-| + search()     |  | + search()     |  | + search()     |
-+----------------+  +----------------+  +----------------+
-```
+![Library UML Diagram](./uml/strategy_uml.png)
 - `BookSearcher` là Context, chưa một tham chiếu đến `SearchStrategy`
 -  `SearchStrategy` là interface định nghĩa phương thức `search()`
 - `SeachByTitle`, `SearchByAuthor`, `SearchByGenre` là các chiến lược cụ thể
@@ -580,26 +526,7 @@ Hãy tưởng tượng một thư viện muốn thông bảo cho nhân viên và
 4. Concrete Observers: Các lớp cụ thể nhận thông bảo (nhân viên, người dùng)
 
 ### Bước 3: Vẽ sơ đồ UML
-```
-+----------------+        +-----------------+
-|   Library      |<>----->|   Observer      |
-|  (Subject)     |        |  (Interface)    |
-|                |        +-----------------+
-| - observers    |        | + update()      |
-| + addObserver()|        +-----------------+
-| + removeObserver()|          /|\
-| + notifyObservers()|          |
-+----------------+              |
-                                |
-        +-----------------------+--------------------+
-        |                                           |
-+----------------+                          +----------------+
-| Librarian      |                          | LibraryUser    |
-| (Concrete)     |                          | (Concrete)     |
-+----------------+                          +----------------+
-| + update()     |                          | + update()     |
-+----------------+                          +----------------+
-```
+![Library UML Diagram](./uml/observer_uml.png)
 - Library là Subject, quản lý danh sách Observers.
 - Observer là interface với phương thức update().
 - Librarian và LibraryUser là Concrete Observers.
@@ -728,23 +655,7 @@ Giả sử bạn có một hệ thống mượn sách cơ bản. Nếu muốn th
 3. Decorator: Lớp trừu tượng bọc Component, thêm tính năng chung.
 4. Concrete Decorator: Các lớp cụ thể thêm tính năng cụ thể (gia hạn, phiên bản đặc biệt).
 ### Bước 3: Vẽ sơ đồ UML:
-```
-+----------------+        +-----------------+
-|   BookBorrow   |<-------|   BookDecorator |
-|  (Component)   |        |   (Decorator)   |
-|                |        +-----------------+
-| + borrow()     |<>----->| - book: BookBorrow |
-+----------------+        | + borrow()      |
-       /|\                +-----------------+
-        |                        /|\
-        |                         |
-+----------------+   +------------+------------+
-| SimpleBook     |   | ExtendedBorrowTime | SpecialEdition |
-| (Concrete)     |   | (Concrete Decorator)| (Concrete Decorator)|
-+----------------+   +---------------------+ +----------------+
-| + borrow()     |   | + borrow()         | | + borrow()     |
-+----------------+   +---------------------+ +----------------+
-```
+![Library UML Diagram](./uml/decorator_uml.png)
 - BookBorrow: Interface định nghĩa hành vi mượn sách.
 - SimpleBook: Lớp cơ bản thực hiện mượn sách thông thường.
 - BookDecorator: Lớp trừu tượng bọc BookBorrow.
@@ -856,30 +767,7 @@ Hệ thống sẽ có một lớp Order đại diện cho đơn hàng và các t
 - State: Interface hoặc abstract class định nghĩa hành vi chung.
 - ConcreteState: Các lớp cụ thể triển khai hành vi cho từng trạng thái.
 ### Bước 3: Vẽ sơ đồ UML
-```
-+----------------+
-|   OrderState   | 
-| <<interface>>  |
-+----------------+
-| +handle()      |
-+----------------+
-         ^
-         | implements
-         |
-+----------------+    +----------------+    +----------------+    +----------------+
-|    NewState    |    | ProcessingState |    | DeliveredState |    | CancelledState |
-+----------------+    +----------------+    +----------------+    +----------------+
-| +handle()      |    | +handle()      |    | +handle()      |    | +handle()      |
-+----------------+    +----------------+    +----------------+    +----------------+
-
-+----------------+
-|      Order     |
-+----------------+
-| -state         |-----> (OrderState)
-| +setState()    |
-| +handleOrder() |
-+----------------+
-```
+![Library UML Diagram](./uml/state_uml.png)
 - OrderState là interface, được các lớp NewState, ProcessingState, DeliveredState, CancelledState triển khai (dùng mũi tên ^ để chỉ "implements").
 - Order chứa một tham chiếu đến OrderState (dùng -----> để biểu thị quan hệ composition).
 ### Bước 4: Viết code
@@ -959,23 +847,7 @@ public class OrderManagement {
 - Adaptee: Hệ thống hiện có cần thích nghi (ở đây là XmlService).
 - Adapter: Lớp trung gian thực hiện chuyển đổi (ở đây là XmlToJsonAdapter).
 ### Bước 3: Vẽ sơ đồ UML
-```
-+----------------+
-|   JsonService  |
-| <<interface>>  |
-+----------------+
-| +processJson() |
-+----------------+
-         ^
-         | implements
-         |
-+----------------+       +----------------+
-| XmlToJsonAdapter|       |   XmlService   |
-+----------------+       +----------------+
-| -xmlService     |-----> | +processXml()  |
-| +processJson()  |       +----------------+
-+----------------+
-```
+![Library UML Diagram](./uml/adapter_uml.png)
 - JsonService: Giao diện Target định nghĩa phương thức processJson().
 - XmlService: Adaptee, cung cấp phương thức processXml().
 - XmlToJsonAdapter: Adapter, triển khai JsonService và chứa một tham chiếu đến - XmlService (dùng -----> để biểu thị composition). Nó chuyển đổi dữ liệu giữa XML và JSON.
@@ -1069,30 +941,7 @@ Received JSON: {"converted": "<data><name>John</name><age>30</age></data>"}
 - Leaf: Đối tượng đơn giản không chứa con (ở đây là File).
 - Composite: Đối tượng phức tạp chứa các thành phần con (ở đây là Directory).
 ### Bước 3: Vẽ sơ đồ UML
-```
-+---------------------+
-| FileSystemComponent |
-| <<interface>>       |
-+---------------------+
-| +displayInfo()      |
-| +addComponent()     | (default: throw exception)
-| +removeComponent()  | (default: throw exception)
-+---------------------+
-         ^
-         | implements
-         |
-+---------------------+       +---------------------+
-|      Directory      |       |        File         |
-+---------------------+       +---------------------+
-| -children: List     |       | -name: String       |
-| +addComponent()     |       | -size: long         |
-| +removeComponent()  |       | +displayInfo()      |
-| +displayInfo()      |       +---------------------+
-+---------------------+
-         |
-         | contains
-         +-----> (FileSystemComponent)
-```
+![Library UML Diagram](./uml/composite_uml.png)
 - FileSystemComponent: Giao diện chung với các phương thức displayInfo(), addComponent(), removeComponent(). Các phương thức thêm/xóa mặc định ném ngoại lệ (không áp dụng cho Leaf).
 - File: Leaf, chỉ chứa thông tin cơ bản (tên, kích thước) và triển khai displayInfo().
 - Directory: Composite, chứa danh sách các thành phần con (children) và triển khai tất cả phương thức, bao gồm quản lý con.
@@ -1218,25 +1067,7 @@ Cho phép linh hoạt thêm hoặc bớt bước kiểm tra mà không thay đ�
 - ConcreteHandler: Các lớp cụ thể triển khai logic xử lý cho từng bước.
 - Client: Gửi yêu cầu vào chuỗi.
 ### Bước 3: Vẽ sơ đồ UML
-```
-+------------------+
-|   AuthHandler    |
-| <<interface>>    |
-+------------------+
-| +handleRequest() |
-| +setNext()       |
-+------------------+
-         ^
-         | implements
-         |
-+------------------+       +------------------+       +------------------+
-| AccountChecker   |-----> | PermissionChecker|-----> | TwoFactorChecker |
-+------------------+       +------------------+       +------------------+
-| -next: AuthHandler|       | -next: AuthHandler|       | -next: AuthHandler|
-| +handleRequest() |       | +handleRequest() |       | +handleRequest() |
-| +setNext()       |       +------------------+       +------------------+
-+------------------+
-```
+![Library UML Diagram](./uml/chainofresponsibility_uml.png)
 - AuthHandler: Giao diện định nghĩa handleRequest() và setNext() để thiết lập chuỗi.
 - AccountChecker, PermissionChecker, TwoFactorChecker: Concrete Handlers, mỗi lớp xử lý một bước và có tham chiếu đến handler tiếp theo (dùng -----> để biểu thị liên kết chuỗi).
 - Mỗi handler có thể dừng chuỗi (nếu thất bại) hoặc chuyển tiếp đến handler tiếp theo.

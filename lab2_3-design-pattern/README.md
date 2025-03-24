@@ -1,7 +1,7 @@
 # Design Pattern Demo
 
 ## 1. Singleton Pattern
-![UML Diagram](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhEIImkLWZEp4lFIIt9prEevb9GqCtC0yhd9QTQ8Ki0XKeoask1yjfbYJcb8CcI8g0qI0DScGQAb2P8SNfgYIVKF3HPhCRNSZcavgK0dGO0)
+![UML Diagram](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhEIImkLl39J2fABAfKgEPIKD3Dp0FAvYMdMY64WG8bcScr8Dca_FpiOf1KSOcD4v1j1nA4AjJG17AqqrDBFA56Q6XYDKGxCIK5f5S3P9YL0eW9qmbY5uEr8IoevN98pKi1kXO0)
 
 ## 2. Factory Method Pattern
 ![Factory Method UML](http://www.plantuml.com/plantuml/png/fP512i9034NtEKMMBT92PoaY1TU2LnYc4GiraJH5HBsx1JiY5aR1zVzvF7xgthpQSEoWPIFT-q2uKsc6O7W5n0NAYTHRAvpbS0S8dUzxt2Xv4vqguvM9NhPa1scoV1a9RttXe6Gq1LM2_TbrltGdd-gR4AAI3Sh8T9v99S3k7x1xWkDcvVfr5PTUtSfoffDCNSIDQL7CTaYc3chYPlpv0m00)
