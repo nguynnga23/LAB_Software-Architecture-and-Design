@@ -13,6 +13,14 @@ Hệ thống quản lý thư viện được thiết kế để hỗ trợ các 
 
 [5. Decorator Pattern - Mở rộng tính năng mượn sách](#5-decorator-pattern---mở-rộng-tính-năng-mượn-sách)
 
+[6. State Pattern - Mở rộng tính năng mượn sách](#6-state-pattern)
+
+[7. Adapter Pattern - Mở rộng tính năng mượn sách](#7-adapter-pattern)
+
+[8. Composite Pattern - Mở rộng tính năng mượn sách](#8-composite-pattern)
+
+[9. Chain of Responsibility Pattern - Mở rộng tính năng mượn sách](#9-chain-of-responsibility-pattern)
+
 
 ## 1. Singleton Pattern - Quản lý thư viện duy nhất
 
@@ -839,9 +847,532 @@ Mượn sách: C++ Advanced (thời gian mượn: 7 ngày) (Phiên bản đặc 
 - Có thể tạo ra nhiều lớp nhỏ nếu có quá nhiều tính năng bổ sung.
 - Việc gỡ lỗi có thể phức tạp hơn do cấu trúc bọc lồng nhau.
 
-# Kết luận
-- **Singleton Pattern**: Đảm bảo chỉ có một thể hiện duy nhất của thư viện trong toàn bộ hệ thống, giúp quản lý tập trung và tránh xung đột dữ liệu. Điều này rất hữu ích khi cần một điểm truy cập toàn cục cho các tài nguyên chung.
-- **Factory Method Pattern**: Cung cấp cơ chế tạo các loại sách khác nhau (sách giấy, sách điện tử, sách audio) mà không cần thay đổi mã nguồn chính. Nó cho phép mở rộng dễ dàng khi thêm loại sách mới, tuân thủ nguyên tắc Open/Closed.
-- **Strategy Pattern**: Mang lại sự linh hoạt trong việc tìm kiếm sách theo nhiều tiêu chí (tên, tác giả, thể loại) tại thời điểm chạy, mà không cần sửa đổi lớp chính. Điều này giúp hệ thống dễ thích nghi với các yêu cầu tìm kiếm mới.
-- **Observer Pattern**: Tự động thông báo cho các đối tượng quan tâm (nhân viên, người dùng) khi có sự kiện xảy ra, như sách mới được thêm hoặc sách quá hạn. Nó tạo ra một cơ chế thông báo hiệu quả và giảm sự phụ thuộc thủ công.
-- **Decorator Pattern**: Cho phép mở rộng tính năng mượn sách (gia hạn, phiên bản đặc biệt) mà không làm thay đổi lớp gốc, mang lại sự linh hoạt trong việc tùy chỉnh trải nghiệm mượn sách cho người dùng.
+## 6. State Pattern
+### Bước 1: Bắt đầu đơn giản
+Hệ thống sẽ có một lớp Order đại diện cho đơn hàng và các trạng thái khác nhau như New, Processing, Delivered, Cancelled. Mỗi trạng thái sẽ có hành vi riêng.
+### Bước 2: Đọc lý thuyết
+- State Pattern: Cho phép một đối tượng thay đổi hành vi khi trạng thái nội tại thay đổi. Nó bao gồm:
+- Context: Đối tượng chính (ở đây là Order).
+- State: Interface hoặc abstract class định nghĩa hành vi chung.
+- ConcreteState: Các lớp cụ thể triển khai hành vi cho từng trạng thái.
+### Bước 3: Vẽ sơ đồ UML
+```
++----------------+
+|   OrderState   | 
+| <<interface>>  |
++----------------+
+| +handle()      |
++----------------+
+         ^
+         | implements
+         |
++----------------+    +----------------+    +----------------+    +----------------+
+|    NewState    |    | ProcessingState |    | DeliveredState |    | CancelledState |
++----------------+    +----------------+    +----------------+    +----------------+
+| +handle()      |    | +handle()      |    | +handle()      |    | +handle()      |
++----------------+    +----------------+    +----------------+    +----------------+
+
++----------------+
+|      Order     |
++----------------+
+| -state         |-----> (OrderState)
+| +setState()    |
+| +handleOrder() |
++----------------+
+```
+- OrderState là interface, được các lớp NewState, ProcessingState, DeliveredState, CancelledState triển khai (dùng mũi tên ^ để chỉ "implements").
+- Order chứa một tham chiếu đến OrderState (dùng -----> để biểu thị quan hệ composition).
+### Bước 4: Viết code
+```java
+// State Interface
+interface OrderState {
+    void handle(Order order);
+}
+
+// Context
+class Order {
+    private OrderState state;
+
+    public Order() {
+        this.state = new NewState(); // Trạng thái ban đầu
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
+    public void handleOrder() {
+        state.handle(this);
+    }
+}
+
+// Concrete States
+class NewState implements OrderState {
+    public void handle(Order order) {
+        System.out.println("Kiểm tra thông tin đơn hàng.");
+        order.setState(new ProcessingState());
+    }
+}
+
+class ProcessingState implements OrderState {
+    public void handle(Order order) {
+        System.out.println("Đóng gói và vận chuyển.");
+        order.setState(new DeliveredState());
+    }
+}
+
+class DeliveredState implements OrderState {
+    public void handle(Order order) {
+        System.out.println("Cập nhật trạng thái đơn hàng là đã giao.");
+    }
+}
+
+class CancelledState implements OrderState {
+    public void handle(Order order) {
+        System.out.println("Hủy đơn hàng và hoàn tiền.");
+    }
+}
+
+// Main
+public class OrderManagement {
+    public static void main(String[] args) {
+        Order order = new Order();
+        order.handleOrder(); // New -> Processing
+        order.handleOrder(); // Processing -> Delivered
+        order.handleOrder(); // Delivered
+
+        Order cancelledOrder = new Order();
+        cancelledOrder.setState(new CancelledState());
+        cancelledOrder.handleOrder(); // Cancelled
+    }
+}
+```
+
+## 7. Adapter Pattern
+### Bước 1: Bắt đầu đơn giản
+- Hệ thống đích (Target) yêu cầu dữ liệu JSON.
+- Hệ thống hiện có (Adaptee) chỉ cung cấp/cần dữ liệu XML.
+- Tạo một Adapter để chuyển đổi qua lại giữa XML và JSON.
+### Bước 2: Đọc lý thuyết
+- Adapter Pattern: Chuyển đổi giao diện của một lớp thành giao diện mà client mong muốn. Bao gồm:
+- Target: Giao diện mà client sử dụng (ở đây là JsonService).
+- Adaptee: Hệ thống hiện có cần thích nghi (ở đây là XmlService).
+- Adapter: Lớp trung gian thực hiện chuyển đổi (ở đây là XmlToJsonAdapter).
+### Bước 3: Vẽ sơ đồ UML
+```
++----------------+
+|   JsonService  |
+| <<interface>>  |
++----------------+
+| +processJson() |
++----------------+
+         ^
+         | implements
+         |
++----------------+       +----------------+
+| XmlToJsonAdapter|       |   XmlService   |
++----------------+       +----------------+
+| -xmlService     |-----> | +processXml()  |
+| +processJson()  |       +----------------+
++----------------+
+```
+- JsonService: Giao diện Target định nghĩa phương thức processJson().
+- XmlService: Adaptee, cung cấp phương thức processXml().
+- XmlToJsonAdapter: Adapter, triển khai JsonService và chứa một tham chiếu đến - XmlService (dùng -----> để biểu thị composition). Nó chuyển đổi dữ liệu giữa XML và JSON.
+### Bước 4: Viết code
+```java
+// Target Interface
+interface JsonService {
+    void processJson(String jsonData);
+}
+
+// Adaptee
+class XmlService {
+    public void processXml(String xmlData) {
+        System.out.println("Processing XML data: " + xmlData);
+    }
+
+    public String generateXml() {
+        return "<data><name>John</name><age>30</age></data>";
+    }
+}
+
+// Adapter
+class XmlToJsonAdapter implements JsonService {
+    private XmlService xmlService;
+
+    public XmlToJsonAdapter(XmlService xmlService) {
+        this.xmlService = xmlService;
+    }
+
+    @Override
+    public void processJson(String jsonData) {
+        // Chuyển đổi JSON sang XML (giả lập)
+        String xmlData = convertJsonToXml(jsonData);
+        xmlService.processXml(xmlData);
+    }
+
+    public String getJsonFromXml() {
+        // Chuyển đổi XML sang JSON (giả lập)
+        String xmlData = xmlService.generateXml();
+        return convertXmlToJson(xmlData);
+    }
+
+    // Hàm giả lập chuyển đổi JSON sang XML
+    private String convertJsonToXml(String jsonData) {
+        System.out.println("Converting JSON to XML: " + jsonData);
+        return "<converted>" + jsonData + "</converted>";
+    }
+
+    // Hàm giả lập chuyển đổi XML sang JSON
+    private String convertXmlToJson(String xmlData) {
+        System.out.println("Converting XML to JSON: " + xmlData);
+        return "{\"converted\": \"" + xmlData + "\"}";
+    }
+}
+
+// Main
+public class AdapterDemo {
+    public static void main(String[] args) {
+        // Tạo đối tượng Adaptee
+        XmlService xmlService = new XmlService();
+
+        // Tạo Adapter
+        JsonService adapter = new XmlToJsonAdapter(xmlService);
+
+        // Client gửi JSON, Adapter chuyển sang XML
+        adapter.processJson("{\"name\": \"John\", \"age\": 30}");
+
+        // Client yêu cầu JSON từ XML
+        String jsonResult = ((XmlToJsonAdapter) adapter).getJsonFromXml();
+        System.out.println("Received JSON: " + jsonResult);
+    }
+}
+```
+```
+Converting JSON to XML: {"name": "John", "age": 30}
+Processing XML data: <converted>{"name": "John", "age": 30}</converted>
+Converting XML to JSON: <data><name>John</name><age>30</age></data>
+Received JSON: {"converted": "<data><name>John</name><age>30</age></data>"}
+```
+- Adapter Pattern giúp kết nối hai hệ thống không tương thích (XML và JSON) mà không cần thay đổi mã nguồn của hệ thống hiện có (XmlService).
+- Code dễ mở rộng: Nếu cần thêm định dạng mới (ví dụ YAML), chỉ cần tạo một Adapter khác.
+- Trong thực tế, bạn có thể sử dụng thư viện như Jackson hoặc Gson để chuyển đổi JSON/XML chính xác hơn thay vì giả lập như ở đây.
+
+## 8. Composite Pattern
+### Bước 1: Bắt đầu đơn giản
+- Tạo một giao diện chung cho cả thư mục và tập tin (hiển thị thông tin).
+- Thư mục có thể thêm/xóa thành phần con, còn tập tin thì không.
+### Bước 2: Đọc lý thuyết
+- Composite Pattern: Tổ chức các đối tượng thành cấu trúc cây để biểu diễn mối quan hệ phần-toàn (part-whole). Bao gồm:
+- Component: Giao diện hoặc lớp trừu tượng định nghĩa hành vi chung (ở đây là FileSystemComponent).
+- Leaf: Đối tượng đơn giản không chứa con (ở đây là File).
+- Composite: Đối tượng phức tạp chứa các thành phần con (ở đây là Directory).
+### Bước 3: Vẽ sơ đồ UML
+```
++---------------------+
+| FileSystemComponent |
+| <<interface>>       |
++---------------------+
+| +displayInfo()      |
+| +addComponent()     | (default: throw exception)
+| +removeComponent()  | (default: throw exception)
++---------------------+
+         ^
+         | implements
+         |
++---------------------+       +---------------------+
+|      Directory      |       |        File         |
++---------------------+       +---------------------+
+| -children: List     |       | -name: String       |
+| +addComponent()     |       | -size: long         |
+| +removeComponent()  |       | +displayInfo()      |
+| +displayInfo()      |       +---------------------+
++---------------------+
+         |
+         | contains
+         +-----> (FileSystemComponent)
+```
+- FileSystemComponent: Giao diện chung với các phương thức displayInfo(), addComponent(), removeComponent(). Các phương thức thêm/xóa mặc định ném ngoại lệ (không áp dụng cho Leaf).
+- File: Leaf, chỉ chứa thông tin cơ bản (tên, kích thước) và triển khai displayInfo().
+- Directory: Composite, chứa danh sách các thành phần con (children) và triển khai tất cả phương thức, bao gồm quản lý con.
+
+### Bước 4: Viết code
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+// Component
+interface FileSystemComponent {
+    void displayInfo();
+    default void addComponent(FileSystemComponent component) {
+        throw new UnsupportedOperationException("Cannot add component.");
+    }
+    default void removeComponent(FileSystemComponent component) {
+        throw new UnsupportedOperationException("Cannot remove component.");
+    }
+}
+
+// Leaf
+class File implements FileSystemComponent {
+    private String name;
+    private long size;
+
+    public File(String name, long size) {
+        this.name = name;
+        this.size = size;
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("File: " + name + ", Size: " + size + " bytes");
+    }
+}
+
+// Composite
+class Directory implements FileSystemComponent {
+    private String name;
+    private List<FileSystemComponent> children;
+
+    public Directory(String name) {
+        this.name = name;
+        this.children = new ArrayList<>();
+    }
+
+    @Override
+    public void addComponent(FileSystemComponent component) {
+        children.add(component);
+    }
+
+    @Override
+    public void removeComponent(FileSystemComponent component) {
+        children.remove(component);
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("Directory: " + name);
+        for (FileSystemComponent child : children) {
+            child.displayInfo();
+        }
+    }
+}
+
+// Main
+public class FileSystemDemo {
+    public static void main(String[] args) {
+        // Tạo các file
+        FileSystemComponent file1 = new File("document.txt", 1200);
+        FileSystemComponent file2 = new File("image.jpg", 5400);
+
+        // Tạo thư mục con
+        Directory subDir = new Directory("SubFolder");
+        subDir.addComponent(new File("note.txt", 300));
+
+        // Tạo thư mục gốc
+        Directory rootDir = new Directory("Root");
+        rootDir.addComponent(file1);
+        rootDir.addComponent(file2);
+        rootDir.addComponent(subDir);
+
+        // Hiển thị thông tin
+        rootDir.displayInfo();
+
+        // Thử xóa một file
+        rootDir.removeComponent(file1);
+        System.out.println("\nAfter removing document.txt:");
+        rootDir.displayInfo();
+    }
+}
+```
+```
+Directory: Root
+File: document.txt, Size: 1200 bytes
+File: image.jpg, Size: 5400 bytes
+Directory: SubFolder
+File: note.txt, Size: 300 bytes
+
+After removing document.txt:
+Directory: Root
+File: image.jpg, Size: 5400 bytes
+Directory: SubFolder
+File: note.txt, Size: 300 bytes
+```
+- Composite Pattern cho phép xử lý thư mục và tập tin theo cách thống nhất thông qua giao diện chung FileSystemComponent.
+- Thư mục (Directory) quản lý các thành phần con đệ quy, trong khi tập tin (File) chỉ cung cấp thông tin cơ bản.
+- Code dễ mở rộng (ví dụ: thêm loại tập tin mới hoặc thư mục đặc biệt) và tuân theo nguyên tắc Open/Closed.
+- Ứng dụng này cũng phù hợp cho giao diện người dùng (UI), nơi các thành phần như nút, hộp thoại có thể được nhóm lại thành các thành phần phức tạp hơn.
+
+## 9. Chain of Responsibility Pattern
+### Phân tích và lựa chọn Pattern
+- Chain of Responsibility Pattern: Phù hợp vì:
+    - Yêu cầu đăng nhập cần qua nhiều bước kiểm tra tuần tự (kiểm tra tài khoản → kiểm tra quyền → xác thực 2 yếu tố).
+    - Mỗi bước có thể xử lý yêu cầu hoặc chuyển tiếp đến bước tiếp theo nếu cần.
+Cho phép linh hoạt thêm hoặc bớt bước kiểm tra mà không thay đổi logic chính.
+### Bước 1: Bắt đầu đơn giản
+- Tạo một chuỗi các xử lý (handler) cho các bước: kiểm tra tài khoản, kiểm tra quyền, xác thực 2 yếu tố.
+- Mỗi handler quyết định xem có xử lý yêu cầu hay chuyển tiếp đến handler tiếp theo.
+### Bước 2: Đọc lý thuyết
+- Chain of Responsibility Pattern: Cho phép truyền yêu cầu qua một chuỗi các đối tượng xử lý, mỗi đối tượng có thể xử lý yêu cầu hoặc chuyển tiếp. Bao gồm:
+- Handler: Giao diện hoặc lớp trừu tượng định nghĩa phương thức xử lý và liên kết đến handler tiếp theo.
+- ConcreteHandler: Các lớp cụ thể triển khai logic xử lý cho từng bước.
+- Client: Gửi yêu cầu vào chuỗi.
+### Bước 3: Vẽ sơ đồ UML
+```
++------------------+
+|   AuthHandler    |
+| <<interface>>    |
++------------------+
+| +handleRequest() |
+| +setNext()       |
++------------------+
+         ^
+         | implements
+         |
++------------------+       +------------------+       +------------------+
+| AccountChecker   |-----> | PermissionChecker|-----> | TwoFactorChecker |
++------------------+       +------------------+       +------------------+
+| -next: AuthHandler|       | -next: AuthHandler|       | -next: AuthHandler|
+| +handleRequest() |       | +handleRequest() |       | +handleRequest() |
+| +setNext()       |       +------------------+       +------------------+
++------------------+
+```
+- AuthHandler: Giao diện định nghĩa handleRequest() và setNext() để thiết lập chuỗi.
+- AccountChecker, PermissionChecker, TwoFactorChecker: Concrete Handlers, mỗi lớp xử lý một bước và có tham chiếu đến handler tiếp theo (dùng -----> để biểu thị liên kết chuỗi).
+- Mỗi handler có thể dừng chuỗi (nếu thất bại) hoặc chuyển tiếp đến handler tiếp theo.
+### Bước 4: Viết code
+```java
+// Handler Interface
+interface AuthHandler {
+    void handleRequest(LoginRequest request);
+    void setNext(AuthHandler next);
+}
+
+// Login Request (dữ liệu đầu vào)
+class LoginRequest {
+    private String username;
+    private String password;
+    private String role;
+    private String twoFactorCode;
+
+    public LoginRequest(String username, String password, String role, String twoFactorCode) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.twoFactorCode = twoFactorCode;
+    }
+
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public String getRole() { return role; }
+    public String getTwoFactorCode() { return twoFactorCode; }
+}
+
+// Concrete Handler 1: Kiểm tra tài khoản
+class AccountChecker implements AuthHandler {
+    private AuthHandler next;
+
+    @Override
+    public void setNext(AuthHandler next) {
+        this.next = next;
+    }
+
+    @Override
+    public void handleRequest(LoginRequest request) {
+        if (request.getUsername().equals("admin") && request.getPassword().equals("12345")) {
+            System.out.println("Account verified.");
+            if (next != null) {
+                next.handleRequest(request);
+            }
+        } else {
+            System.out.println("Account check failed: Invalid username or password.");
+        }
+    }
+}
+
+// Concrete Handler 2: Kiểm tra quyền
+class PermissionChecker implements AuthHandler {
+    private AuthHandler next;
+
+    @Override
+    public void setNext(AuthHandler next) {
+        this.next = next;
+    }
+
+    @Override
+    public void handleRequest(LoginRequest request) {
+        if (request.getRole().equals("admin")) {
+            System.out.println("Permission granted.");
+            if (next != null) {
+                next.handleRequest(request);
+            }
+        } else {
+            System.out.println("Permission check failed: Insufficient role.");
+        }
+    }
+}
+
+// Concrete Handler 3: Xác thực 2 yếu tố
+class TwoFactorChecker implements AuthHandler {
+    private AuthHandler next;
+
+    @Override
+    public void setNext(AuthHandler next) {
+        this.next = next;
+    }
+
+    @Override
+    public void handleRequest(LoginRequest request) {
+        if (request.getTwoFactorCode().equals("XYZ789")) {
+            System.out.println("Two-factor authentication successful.");
+            if (next != null) {
+                next.handleRequest(request);
+            } else {
+                System.out.println("Login successful!");
+            }
+        } else {
+            System.out.println("Two-factor check failed: Invalid code.");
+        }
+    }
+}
+
+// Main
+public class LoginSystemDemo {
+    public static void main(String[] args) {
+        // Tạo các handler
+        AuthHandler accountChecker = new AccountChecker();
+        AuthHandler permissionChecker = new PermissionChecker();
+        AuthHandler twoFactorChecker = new TwoFactorChecker();
+
+        // Thiết lập chuỗi
+        accountChecker.setNext(permissionChecker);
+        permissionChecker.setNext(twoFactorChecker);
+
+        // Tạo yêu cầu đăng nhập
+        LoginRequest validRequest = new LoginRequest("admin", "12345", "admin", "XYZ789");
+        LoginRequest invalidRequest = new LoginRequest("user", "wrong", "guest", "ABC123");
+
+        // Xử lý yêu cầu
+        System.out.println("Valid login attempt:");
+        accountChecker.handleRequest(validRequest);
+
+        System.out.println("\nInvalid login attempt:");
+        accountChecker.handleRequest(invalidRequest);
+    }
+}
+```
+```
+Valid login attempt:
+Account verified.
+Permission granted.
+Two-factor authentication successful.
+Login successful!
+
+Invalid login attempt:
+Account check failed: Invalid username or password.
+```
+- Chain of Responsibility Pattern cho phép tách biệt logic của từng bước kiểm tra (tài khoản, quyền, 2FA) thành các handler riêng lẻ.
+- Linh hoạt: Dễ dàng thêm bước mới (ví dụ: kiểm tra IP) bằng cách thêm handler mới vào chuỗi mà không sửa đổi code hiện có.
+- Mỗi handler tự quyết định có chuyển tiếp yêu cầu hay không, giúp xử lý tuần tự và dừng lại khi cần (nếu thất bại).
+- Ứng dụng thực tế: Có thể tích hợp với cơ sở dữ liệu hoặc dịch vụ xác thực thực sự thay vì logic giả lập như ở đây.
+
