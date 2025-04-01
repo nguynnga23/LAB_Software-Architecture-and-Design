@@ -1,6 +1,5 @@
 package com.example.dtos;
 
-import com.example.entities.Student;
 import lombok.*;
 
 import java.util.List;
@@ -11,9 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class FullSchoolResponse {
-
     private String name;
     private String email;
-    List<Student> students;
-
+    List<StudentDTO> students;
 }

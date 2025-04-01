@@ -4,9 +4,7 @@ function App() {
   return (
     <div style={{ textAlign: 'center' }}>
       <header>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h1>Dockerfile for react app</h1>
       </header>
     </div>
   );
