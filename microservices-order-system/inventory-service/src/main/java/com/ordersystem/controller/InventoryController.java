@@ -1,6 +1,6 @@
 package com.ordersystem.controller;
 
-import com.ordersystem.model.InventoryItem;
+import com.ordersystem.entity.InventoryItem;
 import com.ordersystem.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,15 +1,6 @@
-package com.ordersystem.entity;
+package com.customerservice.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-
-@Data
-@Entity
-@Table(name = "orders")
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
     private String product;
@@ -25,7 +16,6 @@ public class Order {
     }
 
     public Order() {
-
     }
 
     public Long getId() {
@@ -44,20 +34,20 @@ public class Order {
         this.userId = userId;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     public double getPrice() {

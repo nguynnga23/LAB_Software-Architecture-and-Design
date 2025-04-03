@@ -1,6 +1,6 @@
 package com.ordersystem.service;
 
-import com.ordersystem.model.InventoryItem;
+import com.ordersystem.entity.InventoryItem;
 import com.ordersystem.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

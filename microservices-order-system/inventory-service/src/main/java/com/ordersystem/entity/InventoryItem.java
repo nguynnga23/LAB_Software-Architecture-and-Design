@@ -1,4 +1,4 @@
-package com.ordersystem.model;
+package com.ordersystem.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

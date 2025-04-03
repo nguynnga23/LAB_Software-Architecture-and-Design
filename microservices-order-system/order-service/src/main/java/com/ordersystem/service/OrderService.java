@@ -1,6 +1,6 @@
 package com.ordersystem.service;
 
-import com.ordersystem.model.Order;
+import com.ordersystem.entity.Order;
 import com.ordersystem.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +26,9 @@ public class OrderService {
 
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
     }
 }
