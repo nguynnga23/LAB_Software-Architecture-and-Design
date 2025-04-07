@@ -41,7 +41,7 @@
 - **OrderJpaRepository**: Repository JPA cho `Order`.
 
 ## Workflow Chi Tiết
-![System Architecture Diagram](./src/main/resources/images/work-flow.pngiai)
+![System Architecture Diagram](./src/main/resources/images/work-flow.png)
 ### 1. Đặt hàng
 - Người dùng gửi yêu cầu đặt hàng qua API `/api/orders` (được xử lý bởi `OrderController`).
 - `OrderController` gọi `OrderService` để:
