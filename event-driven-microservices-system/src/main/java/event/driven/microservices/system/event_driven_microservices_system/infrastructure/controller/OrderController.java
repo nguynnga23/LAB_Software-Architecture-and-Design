@@ -1,7 +1,7 @@
 package event.driven.microservices.system.event_driven_microservices_system.infrastructure;
 
-import event.driven.microservices.system.event_driven_microservices_system.application.OrderService;
-import event.driven.microservices.system.event_driven_microservices_system.domain.Order;
+import event.driven.microservices.system.event_driven_microservices_system.application.service.OrderService;
+import event.driven.microservices.system.event_driven_microservices_system.domain.model.Order;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

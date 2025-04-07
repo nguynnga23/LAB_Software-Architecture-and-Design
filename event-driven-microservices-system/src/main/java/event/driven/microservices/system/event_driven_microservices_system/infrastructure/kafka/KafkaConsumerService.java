@@ -1,4 +1,4 @@
-package event.driven.microservices.system.event_driven_microservices_system.application;
+package event.driven.microservices.system.event_driven_microservices_system.application.service;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

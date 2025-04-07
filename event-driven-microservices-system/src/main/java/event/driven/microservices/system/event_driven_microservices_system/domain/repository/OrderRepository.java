@@ -1,5 +1,7 @@
 package event.driven.microservices.system.event_driven_microservices_system.domain;
 
+import event.driven.microservices.system.event_driven_microservices_system.domain.model.Order;
+
 import java.util.UUID;
 
 public interface OrderRepository {
