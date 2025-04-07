@@ -1,14 +1,13 @@
-package com.ordersystem;
+package com.basedomains;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-public class OrderServiceApplication {
+public class BaseDomainsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderServiceApplication.class, args);
+		SpringApplication.run(BaseDomainsApplication.class, args);
 	}
 
 }

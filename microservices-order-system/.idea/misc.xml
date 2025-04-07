@@ -3,11 +3,14 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/api-gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/base-domains" />
     <file type="web" url="file://$PROJECT_DIR$/customer-service" />
+    <file type="web" url="file://$PROJECT_DIR$/email-service" />
     <file type="web" url="file://$PROJECT_DIR$/eureka-server" />
     <file type="web" url="file://$PROJECT_DIR$/inventory-service" />
     <file type="web" url="file://$PROJECT_DIR$/order-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-service" />
+    <file type="web" url="file://$PROJECT_DIR$/../../SUBJECT-PROJECT__Software-Architecture-and-Design/notification-service" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK" />
   <component name="ProjectType">

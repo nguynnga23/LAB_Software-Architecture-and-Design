@@ -12,10 +12,34 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/base-domains" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/base-domains" />
+            <option value="$PROJECT_DIR$/base-domains/base-domains" />
+            <option value="$PROJECT_DIR$/base-domains/email-service" />
+            <option value="$PROJECT_DIR$/base-domains/inventory-service" />
+            <option value="$PROJECT_DIR$/base-domains/order-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/customer-service" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/customer-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/email-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/email-service" />
+            <option value="$PROJECT_DIR$/email-service/base-domains" />
+            <option value="$PROJECT_DIR$/email-service/email-service" />
+            <option value="$PROJECT_DIR$/email-service/inventory-service" />
+            <option value="$PROJECT_DIR$/email-service/order-service" />
           </set>
         </option>
       </GradleProjectSettings>
@@ -40,14 +64,18 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/order-service" />
+            <option value="$PROJECT_DIR$/order-service/base-domains" />
+            <option value="$PROJECT_DIR$/order-service/email-service" />
+            <option value="$PROJECT_DIR$/order-service/inventory-service" />
+            <option value="$PROJECT_DIR$/order-service/order-service" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/user-service" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../../SUBJECT-PROJECT__Software-Architecture-and-Design/notification-service" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/user-service" />
+            <option value="$PROJECT_DIR$/../../SUBJECT-PROJECT__Software-Architecture-and-Design/notification-service" />
           </set>
         </option>
       </GradleProjectSettings>

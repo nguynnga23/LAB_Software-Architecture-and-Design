@@ -1,0 +1,19 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.0  # Sử dụng image từ Confluent
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:5.5.0  # Sử dụng image Kafka từ Confluent
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE_KAFKA://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_PORT: 9092
+      KAFKA_LISTENER_HOSTNAME: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
