@@ -1,4 +1,4 @@
-package event.driven.microservices.system.event_driven_microservices_system.infrastructure;
+package event.driven.microservices.system.event_driven_microservices_system.infrastructure.persistence;
 
 import event.driven.microservices.system.event_driven_microservices_system.domain.model.Order;
 import event.driven.microservices.system.event_driven_microservices_system.domain.repository.OrderRepository;

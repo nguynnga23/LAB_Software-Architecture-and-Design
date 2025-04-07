@@ -1,4 +1,4 @@
-package event.driven.microservices.system.event_driven_microservices_system.application.service;
+package event.driven.microservices.system.event_driven_microservices_system.infrastructure.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -1,7 +1,7 @@
-package event.driven.microservices.system.event_driven_microservices_system.application;
+package event.driven.microservices.system.event_driven_microservices_system.application.service;
 
-import event.driven.microservices.system.event_driven_microservices_system.domain.Stock;
-import event.driven.microservices.system.event_driven_microservices_system.infrastructure.StockRepository;
+import event.driven.microservices.system.event_driven_microservices_system.domain.model.Stock;
+import event.driven.microservices.system.event_driven_microservices_system.domain.repository.StockRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

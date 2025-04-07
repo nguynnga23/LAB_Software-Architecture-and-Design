@@ -1,8 +1,8 @@
-package event.driven.microservices.system.event_driven_microservices_system.application;
+package event.driven.microservices.system.event_driven_microservices_system.application.service;
 
-import event.driven.microservices.system.event_driven_microservices_system.domain.Order;
-import event.driven.microservices.system.event_driven_microservices_system.domain.OrderRepository;
-import event.driven.microservices.system.event_driven_microservices_system.domain.OrderServicePort;
+import event.driven.microservices.system.event_driven_microservices_system.domain.model.Order;
+import event.driven.microservices.system.event_driven_microservices_system.domain.repository.OrderRepository;
+import event.driven.microservices.system.event_driven_microservices_system.application.ports.OrderServicePort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 

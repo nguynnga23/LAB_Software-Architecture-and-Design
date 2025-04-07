@@ -1,6 +1,6 @@
-package event.driven.microservices.system.event_driven_microservices_system.infrastructure;
+package event.driven.microservices.system.event_driven_microservices_system.infrastructure.controller;
 
-import event.driven.microservices.system.event_driven_microservices_system.application.service.KafkaProducerService;
+import event.driven.microservices.system.event_driven_microservices_system.infrastructure.kafka.KafkaProducerService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

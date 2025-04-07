@@ -1,4 +1,4 @@
-package event.driven.microservices.system.event_driven_microservices_system.infrastructure;
+package event.driven.microservices.system.event_driven_microservices_system.infrastructure.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

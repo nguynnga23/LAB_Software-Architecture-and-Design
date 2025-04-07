@@ -1,4 +1,4 @@
-package event.driven.microservices.system.event_driven_microservices_system.infrastructure;
+package event.driven.microservices.system.event_driven_microservices_system.infrastructure.controller;
 
 import event.driven.microservices.system.event_driven_microservices_system.application.service.OrderService;
 import event.driven.microservices.system.event_driven_microservices_system.domain.model.Order;

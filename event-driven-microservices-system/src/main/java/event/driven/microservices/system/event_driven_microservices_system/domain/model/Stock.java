@@ -1,10 +1,8 @@
-package event.driven.microservices.system.event_driven_microservices_system.domain;
+package event.driven.microservices.system.event_driven_microservices_system.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 //@AllArgsConstructor
