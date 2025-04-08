@@ -7,8 +7,10 @@
     <file type="web" url="file://$PROJECT_DIR$/customer-service" />
     <file type="web" url="file://$PROJECT_DIR$/email-service" />
     <file type="web" url="file://$PROJECT_DIR$/eureka-server" />
+    <file type="web" url="file://$PROJECT_DIR$/gateway-service" />
     <file type="web" url="file://$PROJECT_DIR$/inventory-service" />
     <file type="web" url="file://$PROJECT_DIR$/order-service" />
+    <file type="web" url="file://$PROJECT_DIR$/product-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-service" />
     <file type="web" url="file://$PROJECT_DIR$/../../SUBJECT-PROJECT__Software-Architecture-and-Design/notification-service" />
   </component>

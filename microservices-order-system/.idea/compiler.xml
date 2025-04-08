@@ -2,15 +2,30 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="api-gateway.main" target="17" />
+      <module name="api-gateway.test" target="17" />
+      <module name="base-domains" target="21" />
+      <module name="base-domains.main" target="21" />
       <module name="base-domains.microservices-order-system" target="21" />
       <module name="base-domains.microservices-order-system.main" target="21" />
       <module name="base-domains.microservices-order-system.test" target="21" />
+      <module name="base-domains.test" target="21" />
       <module name="com.microservices-order-system" target="21" />
       <module name="com.microservices-order-system.main" target="21" />
       <module name="com.microservices-order-system.test" target="21" />
       <module name="com.ordersystem.microservices-order-system" target="17" />
       <module name="com.ordersystem.microservices-order-system.main" target="17" />
       <module name="com.ordersystem.microservices-order-system.test" target="17" />
+      <module name="email-service" target="21" />
+      <module name="email-service.main" target="21" />
+      <module name="email-service.test" target="21" />
+      <module name="inventory-service" target="17" />
+      <module name="inventory-service.main" target="17" />
+      <module name="inventory-service.test" target="17" />
+      <module name="notification-service" target="21" />
+      <module name="notification-service.main" target="21" />
+      <module name="notification-service.test" target="21" />
       <module name="user-service" target="21" />
       <module name="user-service.main" target="21" />
       <module name="user-service.test" target="21" />
