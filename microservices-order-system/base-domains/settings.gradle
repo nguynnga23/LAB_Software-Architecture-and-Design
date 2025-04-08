@@ -1,2 +1,0 @@
-rootProject.name = 'base-domains'
-include 'base-domains', 'order-service', 'inventory-service', 'email-service'
