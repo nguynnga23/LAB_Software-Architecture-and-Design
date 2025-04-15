@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/customer-service-*.jar customer-service.jar
 
 # Expose the port the application runs on
-EXPOSE 8080
+EXPOSE 8083
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "customer-service.jar"]
