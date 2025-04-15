@@ -2,8 +2,8 @@ package com.ordersystem.service;
 
 import com.ordersystem.entity.Order;
 import com.ordersystem.entity.OrderDetail;
-import com.ordersystem.feign.CustomerServiceClient;
-import com.ordersystem.feign.ProductServiceClient;
+import com.ordersystem.client.CustomerServiceClient;
+import com.ordersystem.client.ProductServiceClient;
 import com.ordersystem.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

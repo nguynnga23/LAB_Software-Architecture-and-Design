@@ -1,4 +1,4 @@
-package com.ordersystem.feign;
+package com.ordersystem.client;
 
 import com.ordersystem.dto.Product;
 import org.springframework.cloud.openfeign.FeignClient;
