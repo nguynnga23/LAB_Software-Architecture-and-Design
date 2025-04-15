@@ -1,5 +1,6 @@
 package com.shippingservice.service;
 
+import com.shippingservice.client.OrderServiceClient;
 import com.shippingservice.entity.Shipment;
 import com.shippingservice.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

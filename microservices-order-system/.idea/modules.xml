@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/customer-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/customer-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventory-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventory-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/microservices-order-system.iml" filepath="$PROJECT_DIR$/.idea/microservices-order-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/notification-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/notification-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product-service.main.iml" />
     </modules>

@@ -1,85 +1,85 @@
 version: "3.8"
 
 services:
-  gateway-service:
-    build: ./api-gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      - order-service
-      - product-service
-      - customer-service
-    networks:
-      - microservices-network
-
-  order-service:
-    build: ./order-service
-    ports:
-      - "8081:8081"
-    environment:
-      - DB_URL=jdbc:mysql://order-db:3306/orderdb
-    depends_on:
-      - order-db
-    networks:
-      - microservices-network
-
-  product-service:
-    build: ./product-service
-    ports:
-      - "8082:8082"
-    environment:
-      - DB_URL=jdbc:mysql://product-db:3306/productdb
-    depends_on:
-      - product-db
-    networks:
-      - microservices-network
-
-  customer-service:
-    build: ./customer-service
-    ports:
-      - "8083:8083"
-    environment:
-      - DB_URL=jdbc:mysql://customer-db:3306/customerdb
-    depends_on:
-      - customer-db
-    networks:
-      - microservices-network
-
-  order-db:
-    image: mysql:8
-    environment:
-      MYSQL_DATABASE: orderdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-      MYSQL_ROOT_PASSWORD: rootpass
-    volumes:
-      - order-db-data:/var/lib/mysql
-    networks:
-      - microservices-network
-
-  product-db:
-    image: mysql:8
-    environment:
-      MYSQL_DATABASE: productdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-      MYSQL_ROOT_PASSWORD: rootpass
-    volumes:
-      - product-db-data:/var/lib/mysql
-    networks:
-      - microservices-network
-
-  customer-db:
-    image: mysql:8
-    environment:
-      MYSQL_DATABASE: customerdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-      MYSQL_ROOT_PASSWORD: rootpass
-    volumes:
-      - customer-db-data:/var/lib/mysql
-    networks:
-      - microservices-network
+#  gateway-service:
+#    build: ./api-gateway
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - order-service
+#      - product-service
+#      - customer-service
+#    networks:
+#      - microservices-network
+#
+#  order-service:
+#    build: ./order-service
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - DB_URL=jdbc:mysql://order-db:3306/orderdb
+#    depends_on:
+#      - order-db
+#    networks:
+#      - microservices-network
+#
+#  product-service:
+#    build: ./product-service
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      - DB_URL=jdbc:mysql://product-db:3306/productdb
+#    depends_on:
+#      - product-db
+#    networks:
+#      - microservices-network
+#
+#  customer-service:
+#    build: ./customer-service
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - DB_URL=jdbc:mysql://customer-db:3306/customerdb
+#    depends_on:
+#      - customer-db
+#    networks:
+#      - microservices-network
+#
+#  order-db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_DATABASE: orderdb
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: pass
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    volumes:
+#      - order-db-data:/var/lib/mysql
+#    networks:
+#      - microservices-network
+#
+#  product-db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_DATABASE: productdb
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: pass
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    volumes:
+#      - product-db-data:/var/lib/mysql
+#    networks:
+#      - microservices-network
+#
+#  customer-db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_DATABASE: customerdb
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: pass
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    volumes:
+#      - customer-db-data:/var/lib/mysql
+#    networks:
+#      - microservices-network
 
   message-broker:
     image: rabbitmq:3-management
@@ -90,33 +90,28 @@ services:
       - microservices-network
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper-order-system
+    ports:
+      - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
-    networks:
-      - microservices-network
-
   kafka:
-    image: confluentinc/cp-kafka:7.4.0
+    image: confluentinc/cp-kafka
+    container_name: kafka-order-system
+    ports:
+      - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    networks:
-      - microservices-network
 
 networks:
   microservices-network:
 
-volumes:
-  order-db-data:
-  product-db-data:
-  customer-db-data:
+#volumes:
+#  order-db-data:
+#  product-db-data:
+#  customer-db-data:

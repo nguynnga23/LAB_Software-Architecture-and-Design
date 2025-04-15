@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
-    private String orderId;
-    private String name;
-    private int qty;
-    private double price;
+public class OrderDTO {
+    private Long id;
+    private Long userId;
+    private List<OrderDetailDTO> orderDetails = new ArrayList<OrderDetailDTO>();
 }

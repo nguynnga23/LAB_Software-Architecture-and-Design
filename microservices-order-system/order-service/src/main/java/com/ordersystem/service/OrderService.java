@@ -1,9 +1,11 @@
 package com.ordersystem.service;
 
+import com.ordersystem.dto.OrderDTO;
 import com.ordersystem.entity.Order;
 import com.ordersystem.entity.OrderDetail;
 import com.ordersystem.client.CustomerServiceClient;
 import com.ordersystem.client.ProductServiceClient;
+import com.ordersystem.mapper.OrderMapper;
 import com.ordersystem.repository.OrderRepository;
 import com.ordersystem.kafka.OrderProducer;
 import com.ordersystem.dto.OrderEvent;
@@ -24,7 +26,7 @@ public class OrderService {
     private ProductServiceClient productServiceClient;
 
     private final OrderProducer orderProducer;
-
+    private OrderMapper orderMapper;
     @Autowired
     public OrderService(OrderProducer orderProducer) {
         this.orderProducer = orderProducer;
@@ -59,9 +61,10 @@ public class OrderService {
 
         // Save the order and its details
         Order savedOrder = orderRepository.save(order);
-
+        orderMapper = new OrderMapper();
+        OrderDTO orderDTO = orderMapper.toDto(savedOrder);
         // Send Kafka event
-        OrderEvent event = new OrderEvent(savedOrder.getId(), "Order Placed");
+        OrderEvent event = new OrderEvent("Order Placed","PENDING", orderDTO);
         orderProducer.sendOrderEvent("order-placed", event);
 
         return savedOrder;

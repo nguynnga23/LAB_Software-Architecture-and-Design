@@ -1,14 +1,17 @@
 package com.ordersystem.controller;
 
+import com.ordersystem.dto.OrderDTO;
 import com.ordersystem.dto.OrderRequest;
 import com.ordersystem.entity.Order;
 import com.ordersystem.entity.OrderDetail;
 import com.ordersystem.dto.OrderEvent;
 import com.ordersystem.kafka.OrderProducer;
+import com.ordersystem.mapper.OrderMapper;
 import com.ordersystem.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,19 +21,30 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    private  OrderMapper orderMapper;
+
+
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public List<OrderDTO> getAllOrders() {
+        orderMapper = new OrderMapper();
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for (Order order : orderService.getAllOrders()) {
+            OrderDTO orderDTO = orderMapper.toDto(order);
+            orderDTOS.add(orderDTO);
+        }
+        return orderDTOS;
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
-        return orderService.getOrderById(id);
+    public OrderDTO getOrderById(@PathVariable Long id) {
+        OrderDTO orderDTO = orderMapper.toDto(orderService.getOrderById(id));
+        return orderDTO;
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody OrderRequest orderRequest) {
-        return orderService.createOrder(orderRequest.getOrder(), orderRequest.getOrderDetails());
+    public OrderDTO createOrder(@RequestBody OrderRequest orderRequest) {
+        OrderDTO orderDTO = orderMapper.toDto(orderService.createOrder(orderRequest.getOrder(), orderRequest.getOrderDetails()));
+        return orderDTO;
     }
 
     @DeleteMapping("/{id}")
@@ -39,7 +53,13 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Order> getOrdersByUserId(@PathVariable Long userId) {
-        return orderService.getOrdersByUserId(userId);
+    public List<OrderDTO> getOrdersByUserId(@PathVariable Long userId) {
+        orderMapper = new OrderMapper();
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for (Order order : orderService.getOrdersByUserId(userId)) {
+            OrderDTO orderDTO = orderMapper.toDto(order);
+            orderDTOS.add(orderDTO);
+        }
+        return orderDTOS;
     }
 }
