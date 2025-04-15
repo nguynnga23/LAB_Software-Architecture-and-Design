@@ -7,7 +7,7 @@
         <processorPath useClasspath="false">
           <entry name="$PROJECT_DIR$/../../../../../App/gradle-8.7-bin/gradle-8.7/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="shipping-service.main" />
+        <module name="inventory-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,9 +29,6 @@
       <module name="email-service" target="21" />
       <module name="email-service.main" target="21" />
       <module name="email-service.test" target="21" />
-      <module name="notification-service" target="21" />
-      <module name="notification-service.main" target="21" />
-      <module name="notification-service.test" target="21" />
       <module name="user-service" target="21" />
       <module name="user-service.main" target="21" />
       <module name="user-service.test" target="21" />

@@ -1,14 +1,14 @@
-package com.notificationsystem.kafka;
+package com.inventoryservice.kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotificationConsumer {
+public class InventoryConsumer {
 
-    @KafkaListener(topics = "order-placed", groupId = "notification-group")
+    @KafkaListener(topics = "order-placed", groupId = "inventory-group")
     public void consumeOrderEvent(String message) {
         System.out.println("Received order event: " + message);
-        // Add logic to send email notification
+        // Add logic to update inventory
     }
 }
