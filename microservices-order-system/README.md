@@ -1,120 +1,192 @@
-# Microservices Order System
+# 🧱 Microservices E-commerce System
 
-## Mô tả
-Hệ thống **Microservices Order System** là một ứng dụng được xây dựng theo kiến trúc microservices, bao gồm các dịch vụ độc lập như `User Service`, `Order Service`, `Inventory Service`, `Customer Service`, `Eureka Server`, và `API Gateway`. Mỗi dịch vụ đảm nhận một chức năng cụ thể và giao tiếp với nhau thông qua REST API.
+## 🗂️ Tổng quan
 
-## Kiến trúc
-Hệ thống bao gồm các thành phần chính:
-- **Eureka Server**: Dịch vụ đăng ký và khám phá các microservices.
-- **API Gateway**: Cổng giao tiếp chính, định tuyến các yêu cầu đến các dịch vụ tương ứng.
-- **User Service**: Quản lý thông tin người dùng.
-- **Order Service**: Quản lý đơn hàng.
-- **Inventory Service**: Quản lý kho hàng.
-- **Customer Service**: Tích hợp thông tin người dùng và đơn hàng.
+Hệ thống gồm 3 microservices chính được thiết kế theo kiến trúc Microservices, tuân thủ nguyên lý **Database per Service** và giao tiếp thông qua **REST/gRPC**, **Message Broker**, và **API Gateway**.
 
-## Các dịch vụ
+### 📦 Các dịch vụ chính
 
-### 1. User Service
-- **Endpoint**: `/users`
-- **Chức năng**:
-  - Lấy thông tin người dùng theo ID.
-- **Ví dụ API**:
-  ```http
-  GET /users/{id}
-  ```
+| Service          | Mô tả                                                                 |
+|------------------|----------------------------------------------------------------------|
+| Product Service  | Quản lý thông tin sản phẩm (tên, giá, mô tả, tồn kho,...)            |
+| Order Service    | Quản lý đơn hàng (tạo, xem, hủy đơn hàng, gửi sự kiện đến broker)    |
+| Customer Service | Quản lý thông tin khách hàng (tên, địa chỉ, email, số điện thoại,...)|
 
-### 2. Order Service
-- **Endpoint**: `/orders`
-- **Chức năng**:
-  - Lấy danh sách đơn hàng.
-  - Lấy thông tin đơn hàng theo ID.
-  - Tạo mới đơn hàng.
-  - Xóa đơn hàng.
-  - Lấy danh sách đơn hàng theo ID người dùng.
-- **Ví dụ API**:
-  ```http
-  GET /orders
-  GET /orders/{id}
-  POST /orders
-  DELETE /orders/{id}
-  GET /orders/user/{userId}
-  ```
+---
 
-### 3. Inventory Service
-- **Endpoint**: `/api/inventory`
-- **Chức năng**:
-  - Lấy danh sách sản phẩm trong kho.
-  - Lấy thông tin sản phẩm theo ID.
-  - Thêm sản phẩm mới.
-  - Xóa sản phẩm.
-- **Ví dụ API**:
-  ```http
-  GET /api/inventory
-  GET /api/inventory/{id}
-  POST /api/inventory
-  DELETE /api/inventory/{id}
-  ```
+## 🔁 Giao tiếp giữa các Microservices
 
-### 4. Customer Service
-- **Endpoint**: `/customers`
-- **Chức năng**:
-  - Lấy thông tin người dùng và danh sách đơn hàng của họ.
-- **Ví dụ API**:
-  ```http
-  GET /customers/user/{id}/details
-  ```
+- **Client** gửi yêu cầu đến **API Gateway**.
+- **API Gateway** định tuyến đến các service nội bộ qua REST/gRPC.
+- **Order Service** gửi message bất đồng bộ thông qua **Kafka/RabbitMQ** (ví dụ khi tạo đơn hàng).
+- Các service có thể gọi nhau trực tiếp khi cần kiểm tra trạng thái hoặc thông tin (VD: Order → Product).
 
-### 5. Eureka Server
-- **Chức năng**:
-  - Quản lý đăng ký và khám phá các dịch vụ.
+---
 
-### 6. API Gateway
-- **Chức năng**:
-  - Định tuyến các yêu cầu đến các dịch vụ tương ứng.
-  - Cấu hình trong `application.yml`.
+## 🖼️ Kiến trúc hệ thống
 
-## Công nghệ sử dụng
-- **Java 17**
-- **Spring Boot**
-- **Spring Cloud Netflix Eureka**
-- **Spring Cloud Gateway**
-- **Gradle**
+```
+                        +----------------------+
+                        |      Client (UI)     |
+                        +----------+-----------+
+                                   |
+                                   v
+                     +-------------+--------------+
+                     |         API Gateway        |
+                     +------+------+------+-------+
+                            /         |         \
+                           v          v          v
+              +------------+--+  +----+------+  +-------------+
+              | Product Service|  |Order Service|  |Customer Service|
+              +--+-------------+  +-----+------+  +------+------+
+                 |                        |                |
+                 v                        v                v
+         Product DB (PostgreSQL)  Order DB (PostgreSQL)  Customer DB (MongoDB)
 
-## Cách chạy hệ thống
-1. Khởi động **Eureka Server**.
-2. Khởi động các dịch vụ: `User Service`, `Order Service`, `Inventory Service`, `Customer Service`.
-3. Khởi động **API Gateway**.
-4. Truy cập API thông qua cổng `8080` (API Gateway).
-
-## Cấu hình
-### API Gateway (`application.yml`):
-```yaml
-server:
-  port: 8080
-
-spring:
-  application:
-    name: api-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: order-service
-          uri: lb://order-service
-          predicates:
-            - Path=/api/orders/**
-        - id: inventory-service
-          uri: lb://inventory-service
-          predicates:
-            - Path=/api/inventory/**
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+        Order Service cũng:
+        - Gọi Product Service để kiểm tra tồn kho
+        - Gửi message tới Message Broker để xử lý hậu cần, tồn kho, v.v.
 ```
 
-## Đóng góp
-Nếu bạn muốn đóng góp vào dự án, vui lòng tạo một pull request hoặc mở issue để thảo luận.
+---
 
-## Giấy phép
-Dự án này được phát hành dưới giấy phép MIT.
+## ⚙️ Docker & Docker Compose
+
+### 📁 Cấu trúc thư mục gợi ý
+
+```
+.
+├── api-gateway/
+├── customer-service/
+├── order-service/
+├── product-service/
+├── docker-compose.yml
+└── README.md
+```
+
+### 🐳 docker-compose.yml (rút gọn)
+
+```yaml
+version: "3.8"
+services:
+  product-service:
+    build: ./product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=jdbc:postgresql://product-db:5432/productdb
+    depends_on:
+      - product-db
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8082:8082"
+    environment:
+      - DB_URL=jdbc:postgresql://order-db:5432/orderdb
+    depends_on:
+      - order-db
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "8083:8083"
+    environment:
+      - DB_URL=mongodb://customer-db:27017/customerdb
+    depends_on:
+      - customer-db
+
+  product-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+
+  order-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+
+  customer-db:
+    image: mongo:6
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+
+  message-broker:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+```
+
+---
+
+## 📬 Message Broker
+
+- **RabbitMQ** (hoặc Kafka) dùng để truyền sự kiện giữa các service.
+- Khi đơn hàng được tạo, **Order Service** gửi thông điệp `OrderCreated` đến hàng đợi `order.created`.
+
+---
+
+## 📊 Các API tiêu chuẩn (CRUD)
+
+### Product Service
+- `POST /products`
+- `GET /products/{id}`
+- `PUT /products/{id}`
+- `DELETE /products/{id}`
+
+### Order Service
+- `POST /orders`
+- `GET /orders/{id}`
+- `PUT /orders/{id}`
+- `DELETE /orders/{id}`
+
+### Customer Service
+- `POST /customers`
+- `GET /customers/{id}`
+- `PUT /customers/{id}`
+- `DELETE /customers/{id}`
+
+---
+
+## ✅ Công nghệ sử dụng
+
+- ⚙️ **Spring Boot** / NodeJS / Go / .NET (tùy chọn tech stack mỗi service)
+- 🧱 **PostgreSQL** cho Product & Order
+- 🍃 **MongoDB** cho Customer
+- 🌉 **API Gateway** (Spring Cloud Gateway hoặc NGINX)
+- 📨 **RabbitMQ** (có thể thay bằng Kafka)
+- 🐳 **Docker** & **Docker Compose**
+
+---
+
+## 🚀 Hướng phát triển tiếp theo
+
+- Tích hợp **service discovery** (Eureka hoặc Consul)
+- Thêm **Authentication & Authorization** qua API Gateway
+- Tích hợp **OpenAPI / Swagger**
+- Tích hợp **Logging, Monitoring (ELK, Prometheus + Grafana)**
+
+---
+
+## 📌 Ghi chú
+
+- Đảm bảo mỗi service có database riêng và không chia sẻ schema.
+- Giao tiếp giữa các service cần được kiểm soát kỹ để tránh tight coupling.
+- Ưu tiên bất đồng bộ khi xử lý hậu cần hoặc các hành động không cần phản hồi ngay.
+
+---
+
+## 💬 Liên hệ phát triển
+
+Nguyễn Nga - Backend Developer  
+📧 Email: [nga@example.com]  
+🌐 Github: [github.com/nguyennga](https://github.com/nguyennga)
+

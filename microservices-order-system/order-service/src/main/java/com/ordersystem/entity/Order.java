@@ -2,7 +2,9 @@ package com.ordersystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,6 +17,9 @@ public class Order {
     private String product;
     private int quantity;
     private double price;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
 
     public Order(Long id, Long userId, String product, int quantity, double price) {
         this.id = id;
