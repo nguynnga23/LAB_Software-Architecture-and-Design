@@ -5,6 +5,8 @@ import com.ordersystem.entity.OrderDetail;
 import com.ordersystem.client.CustomerServiceClient;
 import com.ordersystem.client.ProductServiceClient;
 import com.ordersystem.repository.OrderRepository;
+import com.ordersystem.kafka.OrderProducer;
+import com.ordersystem.dto.OrderEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,13 @@ public class OrderService {
 
     @Autowired
     private ProductServiceClient productServiceClient;
+
+    private final OrderProducer orderProducer;
+
+    @Autowired
+    public OrderService(OrderProducer orderProducer) {
+        this.orderProducer = orderProducer;
+    }
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
@@ -49,7 +58,13 @@ public class OrderService {
         order.setOrderDetails(orderDetails);
 
         // Save the order and its details
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        // Send Kafka event
+        OrderEvent event = new OrderEvent(savedOrder.getId(), "Order Placed");
+        orderProducer.sendOrderEvent("order-placed", event);
+
+        return savedOrder;
     }
 
     public void deleteOrder(Long id) {

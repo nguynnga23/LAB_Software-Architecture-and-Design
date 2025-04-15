@@ -2,6 +2,7 @@ package com.productservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 @Data
 @Entity
 @Getter
@@ -18,7 +19,6 @@ public class Product {
     private String name;
     private String description;
     private Double price;
-    private Integer stock;
-
+    // Removed stock field
 }
 
