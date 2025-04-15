@@ -29,28 +29,26 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public Order createOrder(Order order) {
-        // Validate customer
-        customerServiceClient.getCustomerById(order.getUserId());
-
-        // Validate product
-        productServiceClient.getProductById(Long.valueOf(order.getProduct()));
-
-        return orderRepository.save(order);
-    }
-
     public Order createOrder(Order order, List<OrderDetail> orderDetails) {
-        // Validate customer and products (reuse Feign clients)
-        customerServiceClient.getCustomerById(order.getUserId());
-        for (OrderDetail detail : orderDetails) {
-            productServiceClient.getProductById(detail.getProductId());
+        // Validate customer existence
+        if (customerServiceClient.getCustomerById(order.getUserId()) == null) {
+            throw new IllegalArgumentException("Invalid customer ID: " + order.getUserId());
         }
 
-        // Save order and details
-        order.setOrderDetails(orderDetails);
+        // Validate each product in the order details
+        for (OrderDetail detail : orderDetails) {
+            if (productServiceClient.getProductById(detail.getProductId()) == null) {
+                throw new IllegalArgumentException("Invalid product ID: " + detail.getProductId());
+            }
+        }
+
+        // Associate order details with the order
         for (OrderDetail detail : orderDetails) {
             detail.setOrder(order);
         }
+        order.setOrderDetails(orderDetails);
+
+        // Save the order and its details
         return orderRepository.save(order);
     }
 
